@@ -1,0 +1,29 @@
+name: CI - ms-pagamentos (unit)
+
+on: 
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "ms-pagamentos/**"
+      - ".github/workflows/**"
+  push:
+    branches: ["main"]
+    paths:
+      - "ms-pagamentos/**"
+      - ".github/workflows/**"
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      
+      - name: Unit tests (ms-pagamentos)
+        run: mvn -f ms-pagamentos/pom.xml -B test
+  

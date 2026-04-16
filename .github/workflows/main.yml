@@ -1,0 +1,22 @@
+name: ci - ms-pedidos
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "ms-pedidos/**"
+      - ".github/workflows/**"
+
+jobs:
+  test-ms-pedidos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Testes (ms-pedidos)
+        run: mvn -f ms-pedidos/pom.xml -B test
+        
