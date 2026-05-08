@@ -15,14 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
-import javax.print.attribute.standard.Media;
 import java.math.BigDecimal;
 import java.util.List;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -174,6 +170,24 @@ public class PagamentoControllerTest {
                 .andExpect(jsonPath("$.pedidoId").value(pagamento.getPedidoId()));
 
         Mockito.verify(pagamentoService).updatePagamento(eq(existingId), any(PagamentoDTO.class));
+        Mockito.verifyNoMoreInteractions(pagamentoService);
+    }
+
+    @Test
+    void updatePagamentoShouildReturn404WhenIdDoesNotExist() throws Exception{
+        Pagamento pagamentoInvalido = Factory.createPagamento();
+        pagamentoInvalido.setValor(BigDecimal.ZERO);
+        pagamentoInvalido.setNome(null);
+        PagamentoDTO requestDTO = new PagamentoDTO(pagamentoInvalido);
+        String jsonRequestBody = objectMapper.writeValueAsString(requestDTO);
+
+        mockMvc.perform(put("/pagamentos/{id}", existingId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(jsonRequestBody))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+
         Mockito.verifyNoMoreInteractions(pagamentoService);
     }
 
