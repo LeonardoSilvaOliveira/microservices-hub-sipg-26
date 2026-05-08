@@ -25,5 +25,5 @@ jobs:
           cache: maven
       
       - name: Unit tests (ms-pagamentos)
-        run: mvn -f ms-pagamentos/pom.xml -B test
+        run: mvn -f ms-pagamentos/pom.xml -B verify
   
