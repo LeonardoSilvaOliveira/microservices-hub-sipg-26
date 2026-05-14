@@ -165,8 +165,8 @@ public class PagamentoControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$. id").value(existingId))
-                .andExpect(jsonPath("$. status").value(pagamento.getStatus().name()))
+                .andExpect(jsonPath("$.id").value(existingId))
+                .andExpect(jsonPath("$.status").value(pagamento.getStatus().name()))
                 .andExpect(jsonPath("$.pedidoId").value(pagamento.getPedidoId()));
 
         Mockito.verify(pagamentoService).updatePagamento(eq(existingId), any(PagamentoDTO.class));
