@@ -4,6 +4,7 @@ import br.com.fiap.ms_pedidos.exceptions.DatabaseException;
 import br.com.fiap.ms_pedidos.exceptions.ResourceNotFoundException;
 import br.com.fiap.ms_pedidos.exceptions.dto.CustomErrorDTO;
 import br.com.fiap.ms_pedidos.exceptions.dto.ValidationErrorDTO;
+import br.com.fiap.ms_pedidos.exceptions.PedioPagoExpception;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<CustomErrorDTO> handleResourceNotFound(ResourceNotFoundException e,
+                                                                 HttpServletRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND; //404
+        CustomErrorDTO err = new CustomErrorDTO(Instant.now(), status.value(),
+                e.getMessage(), request.getRequestURI());
+
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(PedioPagoExpception.class)
+    public ResponseEntity<CustomErrorDTO> handlePedidoPago(ResourceNotFoundException e,
                                                                  HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND; //404
         CustomErrorDTO err = new CustomErrorDTO(Instant.now(), status.value(),

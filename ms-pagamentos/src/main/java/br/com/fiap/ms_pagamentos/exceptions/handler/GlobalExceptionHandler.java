@@ -29,6 +29,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(PagamentoAprovadoException.class)
+    public ResponseEntity<CustomErrorDTO> handlePagamentoAprovado(ResourceNotFoundException e,
+                                                                 HttpServletRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND; //404
+        CustomErrorDTO err = new CustomErrorDTO(Instant.now(), status.value(),
+                e.getMessage(), request.getRequestURI());
+
+        return ResponseEntity.status(status).body(err);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<CustomErrorDTO> methodArgumentNotValid(MethodArgumentNotValidException e,
                                                                  HttpServletRequest request) {

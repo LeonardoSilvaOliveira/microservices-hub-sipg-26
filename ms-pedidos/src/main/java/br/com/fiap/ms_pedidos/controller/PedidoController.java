@@ -4,6 +4,7 @@ import br.com.fiap.ms_pedidos.dto.PedidoDTO;
 import br.com.fiap.ms_pedidos.service.PedidoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -17,6 +18,18 @@ public class PedidoController {
 
     @Autowired
     private PedidoService pedidoService;
+
+    @PutMapping("/{pedidoID}/pagamento/confirmado")
+    public void confirmarPagamento(@PathVariable Long pedidoID){
+
+        pedidoService.confirmarPagamento(pedidoID);
+    }
+
+    @GetMapping("/port")
+    public String port(@Value("${local.server.port}") String porta){
+
+        return "Instância respondeu na porta" + porta;
+    }
 
     @GetMapping
     public ResponseEntity<List<PedidoDTO>> getAll(){
