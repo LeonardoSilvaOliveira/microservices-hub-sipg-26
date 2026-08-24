@@ -117,6 +117,16 @@ public class PagamentoService {
 
         pagamentoRepository.deleteById(id);
     }
+    @Transactional
+    public PagamentoDTO alterStatusPagamento(Long id){
+        Pagamento pagamento= pagamentoRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Pagamento não encontrado. ID: " + id)
+        );
+
+        pagamento.setStatus(Status.CRIADO.CONFIRMAR_PENDENTE);
+        pagamento = pagamentoRepository.save(pagamento);
+        return new PagamentoDTO(pagamento);
+    }
 
     private void mapDtoToPagamento(PagamentoDTO pagamentoDTO, Pagamento pagamento) {
 
