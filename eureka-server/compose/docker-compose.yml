@@ -1,0 +1,14 @@
+services:
+  mysqldb:
+    container_name: mysql_846
+
+    image: mysql:8.4.6
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - ./.data/mysql-data8:/var/lib/mysql
