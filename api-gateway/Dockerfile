@@ -1,5 +1,5 @@
 # Etapa 1: build
-# Usa uma imagem Maven com Java 17 para compilar o projeto
+# Usa uma imagem Maven com Java 25 para compilar o projeto
 FROM maven:3.9.16-eclipse-temurin-25 AS build
 # Define o diretório de trabalho dentro do container
 WORKDIR /opt/app
@@ -9,7 +9,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Etapa 2: runtime
-# Usa uma imagem leve do Java 17 para rodar o app
+# Usa uma imagem leve do Java 25 para rodar o app
 FROM eclipse-temurin:25-jre
 WORKDIR /opt/app
 # Copia o JAR gerado na etapa de build para a imagem final

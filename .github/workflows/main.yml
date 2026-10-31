@@ -16,7 +16,7 @@ jobs:
 
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "25"
       - name: Testes (ms-pedidos)
         run: mvn -f ms-pedidos/pom.xml -B test
         

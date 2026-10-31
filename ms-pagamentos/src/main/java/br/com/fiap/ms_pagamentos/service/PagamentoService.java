@@ -7,7 +7,6 @@ import br.com.fiap.ms_pagamentos.entities.Status;
 import br.com.fiap.ms_pagamentos.exceptions.ResourceNotFoundException;
 import br.com.fiap.ms_pagamentos.exceptions.handler.PagamentoAprovadoException;
 import br.com.fiap.ms_pagamentos.repository.PagamentoRepository;
-import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,26 +33,6 @@ public class PagamentoService {
         pagamento.setStatus(Status.APROVADO);
         pagamentoRepository.save(pagamento);
         pagamentoClient.confirmarPagamento(pagamento.getPedidoId());
-        return new PagamentoDTO(pagamento);
-    }
-
-    @Transactional
-    public PagamentoDTO confirmarpagamentoDOPedido(Long id){
-
-        Pagamento pagamento = pagamentoRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Pagamento não encontrado. ID: " + id)
-        );
-
-        pagamento.setStatus(Status.APROVADO);
-        pagamentoRepository.save(pagamento);
-
-        try {
-            pagamentoClient.confirmarPagamento(pagamento.getPedidoId());
-        }catch (FeignException.NotFound e){
-            throw new ResourceNotFoundException("Pedido não encontrado. ID: "+ pagamento.getPedidoId());
-        }catch (FeignException e){
-            throw new RuntimeException("Falha ao comunicar com ms-pedidos", e);
-        }
         return new PagamentoDTO(pagamento);
     }
 

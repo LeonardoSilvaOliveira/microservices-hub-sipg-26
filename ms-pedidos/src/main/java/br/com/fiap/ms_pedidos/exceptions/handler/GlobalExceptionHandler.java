@@ -4,7 +4,7 @@ import br.com.fiap.ms_pedidos.exceptions.DatabaseException;
 import br.com.fiap.ms_pedidos.exceptions.ResourceNotFoundException;
 import br.com.fiap.ms_pedidos.exceptions.dto.CustomErrorDTO;
 import br.com.fiap.ms_pedidos.exceptions.dto.ValidationErrorDTO;
-import br.com.fiap.ms_pedidos.exceptions.PedioPagoExpception;
+import br.com.fiap.ms_pedidos.exceptions.PedidoPagoException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +30,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
-    @ExceptionHandler(PedioPagoExpception.class)
-    public ResponseEntity<CustomErrorDTO> handlePedidoPago(ResourceNotFoundException e,
+    @ExceptionHandler(PedidoPagoException.class)
+    public ResponseEntity<CustomErrorDTO> handlePedidoPago(PedidoPagoException e,
                                                                  HttpServletRequest request) {
-        HttpStatus status = HttpStatus.NOT_FOUND; //404
+        HttpStatus status = HttpStatus.CONFLICT; // 409
         CustomErrorDTO err = new CustomErrorDTO(Instant.now(), status.value(),
                 e.getMessage(), request.getRequestURI());
 
@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
 
     // 400 - tipo inválido em PathVariable/RequestParam (ex.: /produtos/abc quando espera Long)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<CustomErrorDTO> handleTypeMismatch(MethodArgumentNotValidException e,
+    public ResponseEntity<CustomErrorDTO> handleTypeMismatch(MethodArgumentTypeMismatchException e,
                                                              HttpServletRequest request){
         HttpStatus status = HttpStatus.BAD_REQUEST; //400
         CustomErrorDTO err = new CustomErrorDTO(Instant.now(), status.value(),

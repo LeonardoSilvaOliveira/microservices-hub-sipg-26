@@ -30,7 +30,7 @@ public class PagamentoController {
 
         return ResponseEntity.ok(dto);
     }
-    public ResponseEntity<PagamentoDTO> fallbackconfirmarPagamentoDoPedido(Long id, Throwable e){
+    public ResponseEntity<PagamentoDTO> fallbackConfirmarPagamentoDoPedido(Long id, Throwable e){
 
         log.error("Falha ao confirmar pedido {}. Ativando Erro: {}", id, e.getMessage());
         PagamentoDTO dto = pagamentoService.alterStatusPagamento(id);

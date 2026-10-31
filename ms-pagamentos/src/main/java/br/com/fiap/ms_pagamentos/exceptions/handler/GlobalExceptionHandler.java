@@ -30,9 +30,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(PagamentoAprovadoException.class)
-    public ResponseEntity<CustomErrorDTO> handlePagamentoAprovado(ResourceNotFoundException e,
+    public ResponseEntity<CustomErrorDTO> handlePagamentoAprovado(PagamentoAprovadoException e,
                                                                  HttpServletRequest request) {
-        HttpStatus status = HttpStatus.NOT_FOUND; //404
+        HttpStatus status = HttpStatus.CONFLICT; // 409
         CustomErrorDTO err = new CustomErrorDTO(Instant.now(), status.value(),
                 e.getMessage(), request.getRequestURI());
 
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
 
     // 400 - tipo inválido em PathVariable/RequestParam (ex.: /produtos/abc quando espera Long)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<CustomErrorDTO> handleTypeMismatch(MethodArgumentNotValidException e,
+    public ResponseEntity<CustomErrorDTO> handleTypeMismatch(MethodArgumentTypeMismatchException e,
                                                              HttpServletRequest request){
         HttpStatus status = HttpStatus.BAD_REQUEST; //400
         CustomErrorDTO err = new CustomErrorDTO(Instant.now(), status.value(),

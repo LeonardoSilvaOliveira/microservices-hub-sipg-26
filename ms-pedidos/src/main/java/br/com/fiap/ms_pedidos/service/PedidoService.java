@@ -6,7 +6,7 @@ import br.com.fiap.ms_pedidos.dto.PedidoDTO;
 import br.com.fiap.ms_pedidos.entities.ItemDoPedido;
 import br.com.fiap.ms_pedidos.entities.Pedido;
 import br.com.fiap.ms_pedidos.entities.Status;
-import br.com.fiap.ms_pedidos.exceptions.PedioPagoExpception;
+import br.com.fiap.ms_pedidos.exceptions.PedidoPagoException;
 import br.com.fiap.ms_pedidos.exceptions.ResourceNotFoundException;
 import br.com.fiap.ms_pedidos.repositories.ItemDoPedidoRepository;
 import br.com.fiap.ms_pedidos.repositories.PedidoRepository;
@@ -76,7 +76,7 @@ public class PedidoService {
         try {
             Pedido pedido = pedidoRepository.getReferenceById(id);
             if (pedido.getStatus().equals(Status.PAGO)){
-                throw new PedioPagoExpception(
+                throw new PedidoPagoException(
                         String.format("Pedido id: %d já está PAGO e não pode ser alterado", id));
             }
             pedido.getItens().clear();
